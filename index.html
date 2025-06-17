@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planetary Age Calculator</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .container {
+            padding: 2rem 0;
+        }
+        
+        .main-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .planet-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .planet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .planet-name {
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: #495057;
+            margin-bottom: 0.5rem;
+        }
+        
+        .age-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #007bff;
+            text-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+        }
+        
+        .planet-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+        
+        .input-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 0.75rem 1rem;
+            font-size: 1.1rem;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        
+        .title {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+        
+        .mercury { border-left: 5px solid #8c7853; }
+        .venus { border-left: 5px solid #ffc649; }
+        .earth { border-left: 5px solid #6b93d6; }
+        .mars { border-left: 5px solid #c1440e; }
+        .jupiter { border-left: 5px solid #d8ca9d; }
+        .saturn { border-left: 5px solid #fab27b; }
+        .uranus { border-left: 5px solid #4fd0e7; }
+        .neptune { border-left: 5px solid #4b70dd; }
+        .pluto { border-left: 5px solid #9ca6b7; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-card p-4">
+            <h1 class="title">Earth Time Conversion for Other Planets</h1>
+            
+            <div class="input-section">
+                <p class="subtitle">Enter an Earth year value to see how time passes on other planets.</p>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <label for="earthAge" class="form-label">Enter your age in Earth years:</label>
+                        <input type="number" class="form-control" id="earthAge" placeholder="Enter your age" min="0" max="150">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" id="planetsContainer">
+                <!-- Planets will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Planet data with orbital periods in Earth days and distances in AU
+        const planets = [
+            {
+                name: "Mercury",
+                orbitalPeriod: 87.97,
+                distanceFromSun: 0.39,
+                class: "mercury"
+            },
+            {
+                name: "Venus",
+                orbitalPeriod: 224.7,
+                distanceFromSun: 0.72,
+                class: "venus"
+            },
+            {
+                name: "Earth",
+                orbitalPeriod: 365.25,
+                distanceFromSun: 1.00,
+                class: "earth"
+            },
+            {
+                name: "Mars",
+                orbitalPeriod: 686.98,
+                distanceFromSun: 1.52,
+                class: "mars"
+            },
+            {
+                name: "Jupiter",
+                orbitalPeriod: 4332.59,
+                distanceFromSun: 5.20,
+                class: "jupiter"
+            },
+            {
+                name: "Saturn",
+                orbitalPeriod: 10759.22,
+                distanceFromSun: 9.58,
+                class: "saturn"
+            },
+            {
+                name: "Uranus",
+                orbitalPeriod: 30688.5,
+                distanceFromSun: 19.18,
+                class: "uranus"
+            },
+            {
+                name: "Neptune",
+                orbitalPeriod: 60182,
+                distanceFromSun: 30.07,
+                class: "neptune"
+            },
+            {
+                name: "Pluto",
+                orbitalPeriod: 90560,
+                distanceFromSun: 39.48,
+                class: "pluto"
+            }
+        ];
+
+        function createPlanetCard(planet) {
+            const earthYears = planet.orbitalPeriod / 365.25;
+            
+            return `
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="planet-card ${planet.class} p-4 h-100">
+                        <div class="planet-name">${planet.name}</div>
+                        <div class="age-display mb-3" id="${planet.name.toLowerCase()}-age">0</div>
+                        <div class="planet-info">
+                            <div><strong>Revolution:</strong> <span id="${planet.name.toLowerCase()}-revolutions">0</span></div>
+                            <div><strong>Orbit Time:</strong> ${Math.round(planet.orbitalPeriod)} Earth days (${earthYears.toFixed(2)} Earth years)</div>
+                            <div><strong>Distance from Sun:</strong> ${planet.distanceFromSun} AU</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculatePlanetaryAge(earthAge, planet) {
+            if (!earthAge || earthAge <= 0) return { age: 0, revolutions: 0 };
+            
+            const earthDays = earthAge * 365.25;
+            const planetAge = earthDays / planet.orbitalPeriod;
+            const revolutions = Math.floor(planetAge);
+            
+            return {
+                age: planetAge.toFixed(2),
+                revolutions: revolutions
+            };
+        }
+
+        function updatePlanetaryAges() {
+            const earthAge = parseFloat(document.getElementById('earthAge').value) || 0;
+            
+            planets.forEach(planet => {
+                const calculation = calculatePlanetaryAge(earthAge, planet);
+                const ageElement = document.getElementById(`${planet.name.toLowerCase()}-age`);
+                const revolutionsElement = document.getElementById(`${planet.name.toLowerCase()}-revolutions`);
+                
+                if (ageElement && revolutionsElement) {
+                    ageElement.textContent = calculation.age;
+                    revolutionsElement.textContent = calculation.revolutions;
+                }
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('planetsContainer');
+            container.innerHTML = planets.map(planet => createPlanetCard(planet)).join('');
+            
+            // Add event listener for real-time calculation
+            document.getElementById('earthAge').addEventListener('input', updatePlanetaryAges);
+            
+            // Initial calculation
+            updatePlanetaryAges();
+        });
+    </script>
+</body>
+</html>
